@@ -1,0 +1,56 @@
+﻿fid,ID,facility,address_geocoding,longitude_validated,latitude_validated
+1,1,"GinekoloÅ¡ko-akuÅ¡erska klinika ""Narodni front""","Kraljice Natalije 62, Savski venac",20.46037896,44.80986826
+2,2,Univerzitetski kliniÄki centar Srbije ,"Pasterova 2, Savski venac",20.45612984,44.79767672
+3,3,"KliniÄko bolniÄki centar ""Dr DragiÅ¡a MiÅ¡oviÄ‡-Dedinje""","Heroja Milana TepiÄ‡a 1, Savski venac",20.45750045,44.77770163
+4,4,"KliniÄko bolniÄki centar ""Zemun""","Vukova 9, Zemun",20.40650076,44.84202916
+5,5,"KliniÄko bolniÄki centar ""Zvezdara""","Dimitrija TucoviÄ‡a 161, Zvezdara",20.49981059,44.79987867
+6,6,OpÅ¡ta bolnica Bor,"dr DragiÅ¡e MiÅ¡oviÄ‡a 1, Bor",22.09159367,44.07981593
+7,7,OpÅ¡ta bolnica Majdanpek,"Kapetanska 30, Majdanpek",21.94106826,44.42439013
+8,8,OpÅ¡ta bolnica Kladovo,"Dunavska 1-3, Kladovo",22.6121142,44.61132087
+9,9,OpÅ¡ta bolnica Negotin,"Badnjevska 4, Negotin",22.52768343,44.23254178
+10,10,OpÅ¡ta bolnica Petrovac na Mlavi,"Moravska br. 2, 12300 Petrovac na Mlavi, Petrovac na Mlavi",21.4156405,44.3763869
+11,11,OpÅ¡ta bolnica PoÅ¾arevac,"Bratstva jedinstva 135, 12000 PoÅ¾arevac, PoÅ¾arevac",21.18712079,44.63238823
+12,12,OpÅ¡ta bolnica Leskovac,"Svetozara MarkoviÄ‡a 110, Leskovac",21.93797445,42.99526594
+13,13,Univerzitetski kliniÄki centar Vojvodine,"Hajduk Veljkova 1, Novi Sad",19.82338065,45.25077811
+14,14,OpÅ¡ta bolnica Vrbas,"Milana ÄŒekiÄ‡a 4, Vrbas",19.63946028,45.58699248
+15,15,OpÅ¡ta bolnica PanÄevo,"MiloÅ¡a Trebinjca 11, PanÄevo",20.65347807,44.86766477
+16,16,OpÅ¡ta bolnica VrÅ¡ac,"AbraÅ¡eviÄ‡eva bb, VrÅ¡ac",21.3068596,45.12168025
+17,17,OpÅ¡ta bolnica Valjevo,"SinÄ‘eliÄ‡eva 62, Valjevo",19.89113021,44.27662764
+18,18,OpÅ¡ta bolnica Loznica,"BolniÄka 65, Loznica",19.22965808,44.53614748
+19,19,OpÅ¡ta bolnica Å abac,"Popa Karana br.4, Å abac",19.69317125,44.75086202
+20,20,OpÅ¡ta bolnica ÄŒaÄak,"Dr DragiÅ¡e MiÅ¡oviÄ‡a br.205, ÄŒaÄak",20.36624194,43.87304677
+21,21,OpÅ¡ta bolnica Gornji Milanovac,"Vojvode Milana br.37, Gornji Milanovac",20.45780088,44.0190999
+22,22,Univerzitetski kliniÄki centar NiÅ¡,"BUL. DR ZORANA ÄINÄIÄ†A 48, Medijana",21.91364598,43.31660612
+23,23,OpÅ¡ta bolnica Aleksinac,"MomÄila PopoviÄ‡a 144, Aleksinac",21.70158782,43.54034458
+24,24,OpÅ¡ta bolnica Surdulica,"Srpskih vladara 111, Surdulica",22.16867068,42.68424892
+25,25,OpÅ¡ta bolnica Vranje,"Jovana JankoviÄ‡a Lunge 1, Vranje",21.90431011,42.55130621
+26,26,OpÅ¡ta bolnica Pirot,"Vojvode MomÄila bb, Pirot",22.56502408,43.15864933
+27,27,OpÅ¡ta bolnica Smederevo,"Knez Mihailova 51, Smederevo",20.924666,44.66070684
+28,28,OpÅ¡ta bolnica Smederevska Palanka,"Vuka KaradÅ¾iÄ‡a 147, Smederevska Palanka",20.96880428,44.36439771
+29,29,OpÅ¡ta bolnica Ä†uprija,"Miodraga NovakoviÄ‡a br.78, Ä†uprija",21.37678095,43.94013838
+30,30,OpÅ¡ta bolnica Jagodina,"KaraÄ‘orÄ‘eva br.4, Jagodina",21.25679661,43.97821607
+31,31,OpÅ¡ta bolnica ParaÄ‡in,"Majora Marka br.12, ParaÄ‡in",21.41434888,43.86402069
+32,32,OpÅ¡ta bolnica KruÅ¡evac,"Kosovska 16, KruÅ¡evac",21.32108001,43.58052108
+33,33,OpÅ¡ta bolnica Kraljevo,"Jug Bogdanova 110, Kraljevo",20.69627288,43.72334339
+34,34,OpÅ¡ta bolnica Novi Pazar,"Generala Å½ivkoviÄ‡a 1, Novi Pazar",20.51084236,43.13295149
+35,35,OpÅ¡ta bolnica Subotica,"Izvorska 3, Subotica",19.6722862,46.08088158
+36,36,OpÅ¡ta bolnica Kikinda,"Äure JakÅ¡iÄ‡a 110, Kikinda",20.47814606,45.83363177
+37,37,OpÅ¡ta bolnica Senta,"KaraÄ‘orÄ‘eva br. 64, Senta",20.0935057,45.9165999
+38,38,OpÅ¡ta bolnica Zrenjanin,"Dr Vase SaviÄ‡a 5, Zrenjanin",20.37666145,45.37380738
+39,39,OpÅ¡ta bolnica Sremska Mitrovica,"Stari Å¡or 65, Sremska Mitrovica",19.60684591,44.97340775
+40,40,Univerzitetski kliniÄki centar Kragujevac,"Zmaj Jovina 30, Kragujevac",20.9141494,44.01860595
+41,41,OpÅ¡ta bolnica AranÄ‘elovac,"Kralja Petra I 62, AranÄ‘elovac",20.54719536,44.30278083
+42,42,OpÅ¡ta bolnica Prokuplje,"ul. PasjaÄka br. 2, Prokuplje",21.59031166,43.22711211
+43,43,OpÅ¡ta bolnica KnjaÅ¾evac,"4. juli 2, KnjaÅ¾evac",22.24705693,43.56409683
+44,44,OpÅ¡ta bolnica ZajeÄar,"RasadniÄka bb, ZajeÄar",22.2914601,43.8917128
+45,45,OpÅ¡ta bolnica Sombor,"VojvoÄ‘anska 75, Sombor",19.10887939,45.7822116
+46,46,OpÅ¡ta bolnica Priboj,"Pribojske Äete bb, Priboj",19.51834206,43.5839106
+47,47,OpÅ¡ta bolnica Prijepolje,"Rajka Divca 2, Prijepolje",19.66299243,43.38922514
+48,48,OpÅ¡ta bolnica UÅ¾ice - odeljenje u Sjenici,"Tadije AndriÄ‡a 10, Sjenica",19.99401778,43.27491632
+49,49,OpÅ¡ta bolnica UÅ¾ice,"MiloÅ¡a ObrenoviÄ‡a 17, UÅ¾ice",19.85914943,43.85155427
+50,50,Dom zdravlja BaÄka Topola (sa stacionarom),"Svetog Stefana 1, BaÄka Topola",19.63286718,45.82238018
+51,51,Dom zdravlja Lazarevac (sa porodiliÅ¡tem),"Dr ÄorÄ‘a KovaÄeviÄ‡a 27, Lazarevac",20.2758772,44.38165297
+52,52,Dom zdravlja Ljubovija (sa stacionarom),"Vojvode MiÅ¡iÄ‡a 58, Ljubovija",19.37054289,44.1879746
+53,53,Dom zdravlja Tutin (sa stacionarom),"Bogoljuba ÄŒukica 12, Tutin",20.33904974,42.98980581
+54,54,Dom zdravlja PreÅ¡evo (sa porodiliÅ¡tem),"15. Novembar br. 88, PreÅ¡evo",21.65321146,42.30569328
+55,55,Dom zdravlja Ivanjica (sa stacionarom),"13. septembar br.39, Ivanjica",20.22606758,43.58808117
