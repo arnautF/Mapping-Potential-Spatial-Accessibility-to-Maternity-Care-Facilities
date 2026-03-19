@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Map Repository – Supplementary Materials</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script src="https://unpkg.com/shpjs@latest/dist/shp.min.js"></script>
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+    }
+
+    header {
+      padding: 14px;
+      border-bottom: 1px solid #e6e6e6;
+      background: #fff;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      height: calc(100vh - 56px);
+    }
+
+    #sidebar {
+      border-right: 1px solid #e6e6e6;
+      padding: 12px;
+      background: #fafafa;
+      overflow: auto;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    .layer-toggle {
+      margin: 10px 0;
+      font-size: 14px;
+    }
+
+    .layer-toggle input {
+      margin-right: 8px;
+    }
+
+    .table-section {
+      border-top: 1px solid #e6e6e6;
+      background: #fff;
+      padding: 12px 14px;
+    }
+
+    #tableContent {
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+
+    .table-expanded #tableContent {
+      max-height: 1200px;
+      opacity: 1;
+    }
+
+    .table-collapsed #tableContent {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    .table-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .table-section h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    #toggleTableBtn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background: #f6f6f6;
+      cursor: pointer;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow: auto;
+      border: 1px solid #e6e6e6;
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #f6f6f6;
+      border-bottom: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    tbody td {
+      border-bottom: 1px solid #eee;
+      padding: 8px;
+      vertical-align: top;
+    }
+
+    tbody tr:hover {
+      background: #fafafa;
+    }
+
+    .small-note {
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Interactive Map Repository</h1>
+  </header>
+
+  <div class="wrapper">
+    <aside id="sidebar">
+      <div id="layerList"></div>
+    </aside>
+
+    <div style="display:flex; flex-direction:column; min-width:0;">
+      <div id="map" style="flex:1; min-height:360px;"></div>
+
+      <section class="table-section table-collapsed" id="tableSection">
+        <div class="table-topbar">
+          <h2>Spatial accessibility statistics</h2>
+          <button id="toggleTableBtn" type="button">Show table</button>
+        </div>
+
+        <div id="tableContent">
+          <div class="table-wrap">
+            <table id="csvTable">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="small-note" id="tableNote"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const map = L.map("map", {
+      center: [44.8, 20.46],
+      zoom: 7
+    });
+
+    const osmLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(map);
+
+    const layersConfig = [
+      {
+        id: "Serbia_60min",
+        name: "Serbia 60min accessibility",
+        type: "shpzip",
+        path: "data/accessibility_areas_repo/Serbia_60min.zip",
+        visible: true,
+        style: {
+          color: "#ffff44",
+          weight: 0,
+          opacity: 0.5,
+          fillColor: "#ffff44",
+          fillOpacity: 0.5
+        }
+      },
+      {
+        id: "Serbia_30min",
+        name: "Serbia 30min accessibility",
+        type: "shpzip",
+        path: "data/accessibility_areas_repo/Serbia_30min.zip",
+        visible: true,
+        style: {
+          color: "#17df14",
+          weight: 0,
+          opacity: 0.5,
+          fillColor: "#17df14",
+          fillOpacity: 0.5
+        }
+      },
+      {
+        id: "Serbia_60min_no_accessibility_area",
+        name: "Serbia 60min non accessibility",
+        type: "shpzip",
+        path: "data/non_accessibility_areas_repo/Serbia_60min_no_accessibility_area.zip",
+        visible: true,
+        style: {
+          color: "#ffff44",
+          weight: 0,
+          opacity: 0.5,
+          fillColor: "#ff0000",
+          fillOpacity: 0.5
+        }
+      },
+      {
+        id: "serbia materinity facilities final",
+        name: "Serbia Maternity facilities",
+        type: "csv_points",
+        path: "data/facilities_locations_repo/serbia_materinity_facilities_final.csv",
+        visible: true,
+        marker: {
+          radius: 4,
+          color: "#ff0000",
+          weight: 0,
+          fillColor: "#ff0000",
+          fillOpacity: 0.9
+        }
+      },
+      {
+        id: "Serbia_NUTS0",
+        name: "Serbia NUTS0",
+        type: "shpzip",
+        path: "data/NUTS_repo/Serbia_NUTS0.zip",
+        visible: true,
+        style: {
+          color: "#000000",
+          weight: 0.75,
+          opacity: 1,
+          fillColor: "#000000",
+          fillOpacity: 0
+        }
+      },
+      {
+        id: "Serbia_NUTS3",
+        name: "Serbia NUTS3",
+        type: "shpzip",
+        path: "data/NUTS_repo/Serbia_NUTS3.zip",
+        visible: true,
+        style: {
+          color: "#626262",
+          weight: 0.5,
+          opacity: 1,
+          fillColor: "#626262",
+          fillOpacity: 0
+        }
+      },
+      {
+        id: "Kosovo_NUTS3_NUTS0",
+        name: "Kosovo NUTS3 NUTS0",
+        type: "shpzip",
+        path: "data/NUTS_repo/Kosovo_NUTS3_NUTS0.zip",
+        visible: true,
+        style: {
+          color: "#000000",
+          weight: 0.75,
+          opacity: 1,
+          fillColor: "#afafaf",
+          fillOpacity: 1
+        }
+      }
+    ];
+
+    const resultsTablePath = "data/misc/results_table.csv";
+
+    const hiddenTableColumns = new Set([
+      "latitude_validated",
+      "longitude_validated"
+    ]);
+
+    const onlyTableColumns = null;
+
+    const loadedLayers = new Map();
+    const layerList = document.getElementById("layerList");
+
+    function addBasemapToggle() {
+      const wrapper = document.createElement("div");
+      wrapper.className = "layer-toggle";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = true;
+
+      const label = document.createElement("label");
+      label.appendChild(checkbox);
+      label.appendChild(document.createTextNode("OpenStreetMap (basemap)"));
+
+      wrapper.appendChild(label);
+      layerList.prepend(wrapper);
+
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          osmLayer.addTo(map);
+        } else {
+          map.removeLayer(osmLayer);
+        }
+      });
+    }
+
+    function createLayerToggle(config) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "layer-toggle";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = config.visible;
+
+      const label = document.createElement("label");
+      label.appendChild(checkbox);
+      label.appendChild(document.createTextNode(config.name));
+
+      wrapper.appendChild(label);
+      layerList.appendChild(wrapper);
+
+      checkbox.addEventListener("change", async () => {
+        if (checkbox.checked) {
+          await ensureLayerLoaded(config);
+          const layer = loadedLayers.get(config.id);
+          if (layer) layer.addTo(map);
+        } else {
+          const layer = loadedLayers.get(config.id);
+          if (layer) map.removeLayer(layer);
+        }
+      });
+    }
+
+    async function ensureLayerLoaded(config) {
+      if (loadedLayers.has(config.id)) return;
+
+      if (config.type === "shpzip") {
+        const geojson = await shp(config.path);
+
+        const layer = L.geoJSON(geojson, {
+          style: config.style,
+          onEachFeature: (feature, layerRef) => {
+            const props = feature.properties;
+            if (!props) return;
+
+            const popupHtml = Object.keys(props)
+              .slice(0, 10)
+              .map(key => `<b>${key}</b>: ${props[key]}`)
+              .join("<br>");
+
+            layerRef.bindPopup(popupHtml);
+          }
+        });
+
+        loadedLayers.set(config.id, layer);
+        return;
+      }
+
+      if (config.type === "csv_points") {
+        const response = await fetch(config.path);
+        const csvText = await response.text();
+
+        const parsed = Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true
+        });
+
+        const features = parsed.data
+          .filter(row =>
+            Number.isFinite(Number(row.longitude_validated)) &&
+            Number.isFinite(Number(row.latitude_validated))
+          )
+          .map(row => ({
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [
+                Number(row.longitude_validated),
+                Number(row.latitude_validated)
+              ]
+            },
+            properties: row
+          }));
+
+        const layer = L.geoJSON(
+          {
+            type: "FeatureCollection",
+            features: features
+          },
+          {
+            pointToLayer: (_, latlng) => L.circleMarker(latlng, config.marker),
+            onEachFeature: (feature, layerRef) => {
+              if (feature.properties.name) {
+                layerRef.bindPopup(feature.properties.name);
+              }
+            }
+          }
+        );
+
+        loadedLayers.set(config.id, layer);
+      }
+    }
+
+    async function renderCsvTable(csvPath) {
+      const table = document.getElementById("csvTable");
+      const thead = table.querySelector("thead");
+      const tbody = table.querySelector("tbody");
+      const note = document.getElementById("tableNote");
+
+      thead.innerHTML = "";
+      tbody.innerHTML = "";
+      note.textContent = "";
+
+      const response = await fetch(csvPath);
+      if (!response.ok) {
+        throw new Error(`Table CSV fetch failed: ${response.status} ${response.statusText}`);
+      }
+
+      const csvText = await response.text();
+      const parsed = Papa.parse(csvText, {
+        header: true,
+        skipEmptyLines: true
+      });
+
+      const rows = parsed.data || [];
+
+      if (!rows.length) {
+        note.textContent = "No rows found in the CSV.";
+        return;
+      }
+
+      let columns = Object.keys(rows[0] || {});
+      if (onlyTableColumns && Array.isArray(onlyTableColumns)) {
+        columns = onlyTableColumns.slice();
+      } else {
+        columns = columns.filter(column => !hiddenTableColumns.has(column));
+      }
+
+      const headerRow = document.createElement("tr");
+      columns.forEach(column => {
+        const th = document.createElement("th");
+        th.textContent = column;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+
+      rows.forEach(row => {
+        const tr = document.createElement("tr");
+
+        columns.forEach(column => {
+          const td = document.createElement("td");
+          const value = row[column];
+          td.textContent = value == null ? "" : String(value);
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    const tableSection = document.getElementById("tableSection");
+    const toggleTableBtn = document.getElementById("toggleTableBtn");
+
+    toggleTableBtn.addEventListener("click", () => {
+      const isOpen = tableSection.classList.contains("table-expanded");
+
+      if (isOpen) {
+        tableSection.classList.remove("table-expanded");
+        tableSection.classList.add("table-collapsed");
+        toggleTableBtn.textContent = "Show table";
+      } else {
+        tableSection.classList.remove("table-collapsed");
+        tableSection.classList.add("table-expanded");
+        toggleTableBtn.textContent = "Hide table";
+      }
+
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 320);
+    });
+
+    async function init() {
+      addBasemapToggle();
+
+      layersConfig.forEach(createLayerToggle);
+
+      for (const config of layersConfig) {
+        if (!config.visible) continue;
+        await ensureLayerLoaded(config);
+        const layer = loadedLayers.get(config.id);
+        if (layer) layer.addTo(map);
+      }
+
+      await renderCsvTable(resultsTablePath);
+    }
+
+    init();
+  </script>
+</body>
+</html>
